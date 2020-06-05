@@ -5,8 +5,6 @@ export const HeaderWrapper = styled.div`
     position: relative;
     height: 56px;
     border-bottom: 1px solid #f0f0f0;
-    min-width: 768px;
-    max-width: 1440px;
     margin: 0 auto;
 `
 export const Logo = styled.a`
@@ -24,7 +22,6 @@ export const Nav = styled.div`
     width: 960px;
     height: 100%;
     margin: 0 auto;
-    padding: 0 50px;
     box-sizing: border-box;
 `
 export const NavItem = styled.div`
@@ -48,19 +45,7 @@ export const NavItem = styled.div`
 export const SearchWrapper = styled.div`
     position: relative;
     float: left;
-    .slide-enter {
-        transition: all .2s ease-out
-    }
-    .slide-enter-active {
-        width:320px;
-    }
-    .slide-exit {
-        transition: all .2s ease-out
-    }
-    .slide-exit-active {
-       width:240px
-    }
-    .iconfont {
+    .zoom {
         position:absolute;
         right: 5px;
         bottom: 5px;
@@ -83,6 +68,7 @@ export const SearchInfo = styled.div`
     width: 320px;
     padding: 0 20px;
     box-shadow: 0 0 8px rgba(0,0,0,.2);
+    background: #fff;
 `
 export const SearchInfoTitle = styled.div`
     margin-top: 20px;
@@ -91,12 +77,20 @@ export const SearchInfoTitle = styled.div`
     font-size: 14px;
     color: #969696;
 `
-
 export const SearchInfoSwitch = styled.span`
     float:right;
     font-size: 14px;
     color: #969696;
     cursor: pointer;
+    .spin {
+        display: block;
+        float: left;
+        font-size: 13px;
+        margin-right: 2px;
+        transition: all 0.2s ease-in;
+        transform-origin: center center
+    }
+    
 `
 export const SearchInfoItem = styled.a`
     display: block;
@@ -128,6 +122,18 @@ export const NavSearch = styled.input`
     }
     &.focused {
         width: 320px;
+    }
+    &.slide-enter {
+        transition: all .5s linear;
+    }
+    &.slide-enter-active {
+        width: 320px;
+    }
+    &.slide-exit {
+        transition: all .5s linear;
+    }
+    &.slide-exit-active {
+        width: 240px;
     }
 `
 export const Addition = styled.div`

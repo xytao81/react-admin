@@ -6,7 +6,7 @@ import { actionCreators } from './store'
 
 class Header extends Component {
 
-    getSearchList(show) {
+    getSearchList() {
         const { focused, list, page, handleMouseEnter, handleMouseLeave, mouseIn, changePage, totalPage } = this.props
 
         const pageList = []
@@ -24,7 +24,9 @@ class Header extends Component {
             return (<SearchInfo onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <SearchInfoTitle>
                     热门搜索
-                    <SearchInfoSwitch onClick={() => changePage(page, totalPage)}>换一批</SearchInfoSwitch>
+                    <SearchInfoSwitch onClick={() => changePage(page, totalPage, this.spin)}>
+                        <i ref={(icon) => {this.spin = icon}} className="iconfont spin">&#xe606;</i>
+                        换一批</SearchInfoSwitch>
                 </SearchInfoTitle>
                 {
                     pageList
@@ -37,7 +39,7 @@ class Header extends Component {
 
     render() {
 
-        const { focused, onfocus, onblur } = this.props
+        const { focused, onfocus, onblur, list } = this.props
 
         return (
             <HeaderWrapper>
@@ -52,15 +54,15 @@ class Header extends Component {
                     <SearchWrapper>
                         <CSSTransition
                             in={focused}
-                            timeout={200}
+                            timeout={500}
                             classNames="slide"
                         >
                             <NavSearch placeholder='搜索' className={focused ? "focused" : ""}
-                                onFocus={onfocus}
+                                onFocus={() => onfocus(list)}
                                 onBlur={onblur}>
                             </NavSearch>
                         </CSSTransition>
-                        <i className={focused ? "focused iconfont" : "iconfont"}>&#xe62d;</i>
+                        <i className={focused ? "focused iconfont zoom" : "iconfont zoom"}>&#xe62d;</i>
                         {this.getSearchList()}
                     </SearchWrapper>
                 </Nav>
@@ -87,8 +89,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onfocus() {
-            dispatch(actionCreators.getList())
+        onfocus(list) {
+            list.size === 0 && dispatch(actionCreators.getList())
             dispatch(actionCreators.searchFocus())
         },
         onblur() {
@@ -100,7 +102,15 @@ const mapDispatchToProps = (dispatch) => {
         handleMouseLeave() {
             dispatch(actionCreators.mouseLeave())
         },
-        changePage(page, totalPage) {
+        changePage(page, totalPage, spin) {  
+            let origin = spin.style.transform.replace(/[^0-9]/ig, '')
+            if (origin) {
+                origin = parseInt(origin, 10)
+            } else {
+                origin = 0
+            }
+            spin.style.transform = 'rotate(' + (origin + 360) + 'deg)'
+
             if (page < totalPage) {
                 dispatch(actionCreators.changePage(page + 1))
             } else {
